@@ -35,7 +35,9 @@ export const getProductByCompanyIdController = async (req, res) => {
       sampleProduct?.all_company_ids?.map((id) => typeof id)
     );
 
-    const products = await Product.find({ all_company_ids: parsedCompanyId });
+    const products = await Product.find({ all_company_ids: parsedCompanyId })
+      .sort({ created_on: -1 })
+      .limit(1);
     console.log("Found products:", products.length);
 
     res.status(200).json(products);

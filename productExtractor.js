@@ -2,7 +2,7 @@ import axios from "axios";
 import { response } from "express";
 
 const OPENROUTER_API_KEY =
-  "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"; // Set your API key in environment variables
+  "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"; // Set your API key in environment variables
 const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1/chat/completions";
 const MODEL_NAME = "google/gemini-flash-1.5";
 
@@ -211,12 +211,15 @@ Current Product Information:
 - Country of Origin: ${extractedData.basicInfo.countryOfOrigin}
 
 Please provide:
-1. An enhanced, SEO-optimized product title (max 80 characters)
+1. An eye cathing product title that is catchy, SEO-friendly, and includes the brand name, product name, and size if applicable.
+   - Example: "Stylish Cotton T-Shirt - Size M | BrandName"
 2. A compelling product description (150-300 words) that includes:
+   - a eye catching introduction and desciption of the product that contains the offer price, discount, etc.
    - Key features and benefits
    - Use cases or occasions
    - Material/quality highlights
    - Why customers should buy this product
+   - EXAMPLE: "This stylish cotton t-shirt is perfect for casual outings and everyday wear. Made from high-quality cotton, it offers comfort and breathability. Available in multiple sizes, this t-shirt is a must-have for your wardrobe. avail it now at an unbeatable price of ₹${pricing.price} (Effective: ₹${pricing.effectivePrice}). Don't miss out on this limited-time offer!"
 
 Format your response as JSON:
 {
@@ -224,6 +227,14 @@ Format your response as JSON:
   "enhancedDescription": "your enhanced description here",
   "seoKeywords": ["keyword1", "keyword2", "keyword3"]
 }
+
+Example Response: {
+  "enhancedTitle": "Sunshine Yellow Sandals - One Size Fits Most |  ₹900 (20% Off!)",
+  "enhancedDescription": "Step into sunshine with these vibrant yellow sandals!  Originally priced at ₹1100, you can now snag these stylish beauties for just ₹900 – that's a 20% discount!  Perfect for adding a pop of color to your summer wardrobe, these sandals are crafted from lightweight, comfortable material (Please specify material here, e.g.,  soft leather, breathable canvas).  The one-size-fits-most design ensures a comfortable fit for most feet.  \n\nImagine yourself strolling along the beach, exploring a bustling market, or enjoying a casual lunch date – these versatile sandals are ideal for any summer occasion.  Their lightweight design makes them perfect for travel, and their cheerful yellow hue will brighten up any outfit.  \n\nMade in India with quality craftsmanship, these sandals offer exceptional value for their price.  Don't miss out on this fantastic deal!  Order your pair of Sunshine Yellow Sandals today and experience the perfect blend of style, comfort, and affordability.  Our 30-day return policy ensures a risk-free purchase. ",
+  "seoKeywords": ["yellow sandals", "summer sandals", "women's sandals", "one size fits most", "Indian sandals", "affordable sandals", "summer fashion", "beach sandals", "casual sandals", "sale", "discount"]
+}
+
+give the response in JSON format only, without any additional text or markdown formatting. The response should not include any code blocks or special characters, just plain JSON.
 `;
 
   try {
@@ -279,8 +290,9 @@ Format your response as JSON:
     );
 
     let aiResponse = response.data.choices[0].message.content;
+    console.log("Raw AI Response:", aiResponse);
 
-    // Clean up the response - remove markdown code blocks if present
+    // // Clean up the response - remove markdown code blocks if present
     aiResponse = aiResponse.trim();
 
     // Remove markdown code blocks
@@ -290,7 +302,7 @@ Format your response as JSON:
       aiResponse = aiResponse.replace(/^```\s*/, "").replace(/\s*```$/, "");
     }
 
-    console.log("OpenRouter AI Response:", aiResponse);
+    // console.log("OpenRouter AI Response:", aiResponse);
     // Try to parse JSON response
     try {
       const enhancedData = JSON.parse(aiResponse);

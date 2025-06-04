@@ -24,110 +24,213 @@ app.use(express.json());
 app.use("/api/v1", imageRoute);
 app.use("/api/v1", productRoute);
 
-
 app.get("/", (req, res) => {
   res.send("Welcome to the Image Upload API");
 });
 
+// export const getProductWithTitleDescription = async (req, res) => {
+//   try {
+//     const { companyId } = req.params;
+//     const products = await Product.find({
+//       all_company_ids: Number(companyId),
+//     })
+//       .sort({ created_on: -1 })
+//       .limit(1);
+
+//     if (!products || products.length === 0) {
+//       return res
+//         .status(404)
+//         .json({ message: "No products found for this company" });
+//     }
+
+//     // Process products with Promise.all to wait for all async operations
+//     const processedProducts = await Promise.all(
+//       products.map(async (product) => {
+//         try {
+//           const { title, description, pricing, imageUrl, extractedData } =
+//             processProductForTitleAndDescription(product.toObject());
+
+//           console.log("image in getProductWithTitleDescription", imageUrl);
+
+//           // Ensure title and description are not empty
+//           if (!title || !description) {
+//             return {
+//               generatedTitle: "No title available",
+//               generatedDescription: "No description available",
+//               pricing: product.pricing,
+//               imageUrl: product.media?.[0]?.url || "",
+//             };
+//           }
+
+//           // Fix imageUrl assignment - you can't reassign a const
+//           let finalImageUrl = imageUrl;
+//           if (!finalImageUrl) {
+//             finalImageUrl = product.media?.[0]?.url || "";
+//           }
+
+//           // Run image upload and AI enhancement in parallel for better performance
+//           const [bannerAdImage, aiEnhancement] = await Promise.all([
+//             imageUploadFunction(finalImageUrl),
+//             enhanceProductWithAI({
+//               extractedData,
+//               title,
+//               description,
+//               pricing,
+//             }),
+//           ]);
+
+//           const {
+//             enhancedTitle: generatedTitle,
+//             enhancedDescription: generatedDescription,
+//           } = aiEnhancement;
+
+//           console.log(
+//             "Generated Title:",
+//             generatedTitle,
+//             "Generated Description:",
+//             generatedDescription,
+//             "Pricing:",
+//             pricing,
+//             "Banner Ad Image:",
+//             bannerAdImage
+//           );
+
+//           return {
+//             generatedTitle,
+//             generatedDescription,
+//             pricing,
+//             bannerAdImage,
+//           };
+//         } catch (productError) {
+//           console.error("Error processing individual product:", productError);
+//           // Return fallback data for this product instead of failing completely
+//           return {
+//             generatedTitle: product.title || "Error generating title",
+//             generatedDescription:
+//               product.description || "Error generating description",
+//             pricing: product.pricing,
+//             bannerAdImage: product.media?.[0]?.url || "",
+//             error: productError.message,
+//           };
+//         }
+//       })
+//     );
+
+//     res.status(200).json(processedProducts);
+//   } catch (err) {
+//     console.error("Controller error:", err);
+//     res.status(500).json({
+//       message: "Failed to process products",
+//       error: err.message,
+//     });
+//   }
+// };
+
 export const getProductWithTitleDescription = async (req, res) => {
   try {
-    const { companyId } = req.params;
-    const products = await Product.find({
-      all_company_ids: Number(companyId),
-    })
-      .sort({ created_on: -1 })
-      .limit(1);
+    // Get product data from request body instead of database
+    const { product } = req.body;
 
-    if (!products || products.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No products found for this company" });
+    // Validate that product data is provided
+    if (!product) {
+      return res.status(400).json({
+        message: "Product data is required in request body",
+      });
     }
 
-    // Process products with Promise.all to wait for all async operations
-    const processedProducts = await Promise.all(
-      products.map(async (product) => {
-        try {
-          const { title, description, pricing, imageUrl, extractedData } =
-            processProductForTitleAndDescription(product.toObject());
+    // Validate required product fields
+    if (!product._id) {
+      return res.status(400).json({
+        message: "Product must have an _id field",
+      });
+    }
 
-          console.log("image in getProductWithTitleDescription", imageUrl);
+    console.log("Processing product from payload:", product._id);
 
-          // Ensure title and description are not empty
-          if (!title || !description) {
-            return {
-              generatedTitle: "No title available",
-              generatedDescription: "No description available",
-              pricing: product.pricing,
-              imageUrl: product.media?.[0]?.url || "",
-            };
-          }
+    try {
+      const { title, description, pricing, imageUrl, extractedData } =
+        processProductForTitleAndDescription(product);
 
-          // Fix imageUrl assignment - you can't reassign a const
-          let finalImageUrl = imageUrl;
-          if (!finalImageUrl) {
-            finalImageUrl = product.media?.[0]?.url || "";
-          }
+      console.log("Extracted data:", { title, description, pricing, imageUrl });
 
-          // Run image upload and AI enhancement in parallel for better performance
-          const [bannerAdImage, aiEnhancement] = await Promise.all([
-            imageUploadFunction(finalImageUrl),
-            enhanceProductWithAI({
-              extractedData,
-              title,
-              description,
-              pricing,
-            }),
-          ]);
+      // Ensure title and description are not empty
+      if (!title || !description) {
+        return res.status(200).json({
+          generatedTitle: product.name || product.title || "No title available",
+          generatedDescription:
+            product.description || "No description available",
+          pricing: product.pricing || {},
+          imageUrl: product.media?.[0]?.url || "",
+          message: "Used fallback data due to missing title/description",
+        });
+      }
 
-          const {
-            enhancedTitle: generatedTitle,
-            enhancedDescription: generatedDescription,
-          } = aiEnhancement;
+      // Fix imageUrl assignment
+      let finalImageUrl = imageUrl;
+      if (!finalImageUrl) {
+        finalImageUrl = product.media?.[0]?.url || "";
+      }
 
-          console.log(
-            "Generated Title:",
-            generatedTitle,
-            "Generated Description:",
-            generatedDescription,
-            "Pricing:",
-            pricing,
-            "Banner Ad Image:",
-            bannerAdImage
-          );
+      // Run image upload and AI enhancement in parallel for better performance
+      const [bannerAdImage, aiEnhancement] = await Promise.all([
+        imageUploadFunction(finalImageUrl),
+        enhanceProductWithAI({
+          extractedData,
+          title,
+          description,
+          pricing,
+        }),
+      ]);
 
-          return {
-            generatedTitle,
-            generatedDescription,
-            pricing,
-            bannerAdImage,
-          };
-        } catch (productError) {
-          console.error("Error processing individual product:", productError);
-          // Return fallback data for this product instead of failing completely
-          return {
-            generatedTitle: product.title || "Error generating title",
-            generatedDescription:
-              product.description || "Error generating description",
-            pricing: product.pricing,
-            bannerAdImage: product.media?.[0]?.url || "",
-            error: productError.message,
-          };
-        }
-      })
-    );
+      const {
+        enhancedTitle: generatedTitle,
+        enhancedDescription: generatedDescription,
+      } = aiEnhancement;
 
-    res.status(200).json(processedProducts);
+      console.log(
+        "Generated Title:",
+        generatedTitle,
+        "Generated Description:",
+        generatedDescription,
+        "Pricing:",
+        pricing,
+        "Banner Ad Image:",
+        bannerAdImage
+      );
+
+      const result = {
+        generatedTitle,
+        generatedDescription,
+        pricing,
+        bannerAdImage: bannerAdImage || finalImageUrl,
+      };
+
+      res.status(200).json(result);
+    } catch (productError) {
+      console.error("Error processing product:", productError);
+
+      // Return fallback data instead of failing completely
+      res.status(200).json({
+        generatedTitle:
+          product.name || product.title || "Error generating title",
+        generatedDescription:
+          product.description || "Error generating description",
+        pricing: product.pricing || {},
+        bannerAdImage: product.media?.[0]?.url || "",
+        error: productError.message,
+        message: "Processing failed, returning fallback data",
+      });
+    }
   } catch (err) {
     console.error("Controller error:", err);
     res.status(500).json({
-      message: "Failed to process products",
+      message: "Failed to process product",
       error: err.message,
     });
   }
 };
 
-app.get("/products/:companyId", getProductWithTitleDescription);
+app.post("/products/:companyId", getProductWithTitleDescription);
 
 const connect = async () => {
   try {
