@@ -1,8 +1,7 @@
 import axios from "axios";
 import { response } from "express";
 
-const OPENROUTER_API_KEY =
-  "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"; // Set your API key in environment variables
+// Set your API key in environment variables
 const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1/chat/completions";
 const MODEL_NAME = "google/gemini-flash-1.5";
 
@@ -281,7 +280,7 @@ give the response in JSON format only, without any additional text or markdown f
       },
       {
         headers: {
-          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
           "Content-Type": "application/json",
           "HTTP-Referer": "http://localhost:3000", // Replace with your domain
           "X-Title": "Product Enhancement Service",
