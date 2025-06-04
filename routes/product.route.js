@@ -4,6 +4,7 @@ import {
   getLatestProductController,
   getProductByCompanyIdController,
   getLatestProductByCompanyIdController,
+  deleteProductController,
 } from "../controller/product.controller.js"; // Adjust the path if needed
 
 const router = express.Router();
@@ -25,5 +26,8 @@ router.get(
   "/getLatestProductByCompanyId/:companyId",
   getLatestProductByCompanyIdController
 );
+
+// Delete a product by ID
+router.post("/deleteProduct", deleteProductController);
 
 export default router;

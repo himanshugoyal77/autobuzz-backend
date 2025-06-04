@@ -12,6 +12,21 @@ export const saveProductController = async (req, res) => {
   }
 };
 
+export const deleteProductController = async (req, res) => {
+  const { productId } = req.body;
+
+  try {
+    const deletedProduct = await Product.findByIdAndDelete(productId);
+    if (!deletedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting product:", err);
+    res.status(500).json({ message: "Failed to delete product" });
+  }
+};
+
 export const getProductByCompanyIdController = async (req, res) => {
   try {
     const { companyId } = req.params;
