@@ -16,7 +16,9 @@ export const deleteProductController = async (req, res) => {
   const { productId } = req.body;
 
   try {
-    const deletedProduct = await Product.findByIdAndDelete(productId);
+    const deletedProduct = await Product.findOneAndDelete({
+      item_code: productId,
+    });
     if (!deletedProduct) {
       return res.status(404).json({ message: "Product not found" });
     }
