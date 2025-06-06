@@ -1,0 +1,183 @@
+{
+  "type": "product",
+  "grouped_attributes": [
+    {
+      "title": "Product Details",
+      "details": [
+        {
+          "key": "Gender",
+          "type": "text",
+          "value": "Women"
+        },
+        {
+          "key": "Colour",
+          "type": "text",
+          "value": "Pastel Pink"
+        },
+        {
+          "key": "Marketer Address",
+          "type": "text",
+          "value": "New Delhi"
+        },
+        {
+          "key": "Marketer Name",
+          "type": "text",
+          "value": "Pretty Please"
+        },
+        {
+          "key": "Net Quantity",
+          "type": "text",
+          "value": "1 N"
+        }
+      ]
+    }
+  ],
+  "medias": [
+    {
+      "url": "https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/products/pictures/item/free/original/RDfLeAu98-What-a-Click-Bestie.jpeg",
+      "type": "image",
+      "alt": "What a Click Bestie"
+    },
+    {
+      "url": "https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/products/pictures/item/free/original/oZac3z5Rc-What-a-Click-Bestie.jpeg",
+      "type": "image",
+      "alt": "What a Click Bestie"
+    },
+    {
+      "url": "https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/products/pictures/item/free/original/nPP6FhSfs-What-a-Click-Bestie.jpeg",
+      "type": "image",
+      "alt": "What a Click Bestie"
+    }
+  ],
+  "brand": {
+    "name": null,
+    "uid": 7450,
+    "logo": {},
+    "action": {
+      "page": {
+        "type": "products",
+        "query": {
+          "brand": [null]
+        }
+      },
+      "type": "page"
+    },
+    "_custom_json": {},
+    "description": ""
+  },
+  "department": {
+    "name": "Fashion",
+    "uid": 21,
+    "logo": {
+      "type": "image",
+      "url": "https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/department/pictures/square-logo/original/FpGKlnVrH-department.png"
+    },
+    "slug": "fashion"
+  },
+  "uid": 9739009,
+  "item_code": "PA-14",
+  "slug": "what-a-click-bestie-9739009",
+  "attributes": {
+    "essential": "No",
+    "gender": ["Women"],
+    "primary_color": "Pink",
+    "primary_material": "Plastic",
+    "color": "Pastel Pink",
+    "net-quantity": "1 N",
+    "marketer-name": "Pretty Please",
+    "marketer-address": "New Delhi",
+    "name": "What a Click Bestie",
+    "description": "This Bag exude effortless elegance, adding a touch of sophistication to your party look.",
+    "product_details": "This Bag exude effortless elegance, adding a touch of sophistication to your party look.",
+    "brand_name": "Pretty  Please",
+    "primary_color_hex": "FA7DC9",
+    "item_code": "PA-14",
+    "country_of_origin": "India",
+    "image_nature": "standard",
+    "l3_category_names": ["Sling Bags"],
+    "sizes": ["OS"],
+    "discount": 23,
+    "departments": "Fashion",
+    "is_custom_order": false,
+    "min_price_effective": 1159,
+    "is_set": false,
+    "size_depth": 1,
+    "is_available": true
+  },
+  "name": "What a Click Bestie",
+  "has_variant": true,
+  "categories": [null],
+  "category_map": {
+    "l1": {
+      "uid": 31,
+      "name": "Accessories",
+      "logo": {
+        "type": "image",
+        "url": "https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/media/banner_portrait/brand/original/540_ecba3a1af141467da8abc20500f983db.jpg"
+      },
+      "action": {
+        "page": {
+          "type": "products",
+          "query": {
+            "category": ["accessories"]
+          }
+        },
+        "type": "page"
+      },
+      "_custom_json": {}
+    },
+    "l2": {
+      "uid": 2299,
+      "name": "Bags, Wallets and Luggages",
+      "logo": {
+        "type": "image",
+        "url": "https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/media/banner_portrait/brand/original/540_ecba3a1af141467da8abc20500f983db.jpg"
+      },
+      "action": {
+        "page": {
+          "type": "products",
+          "query": {
+            "category": ["bags-wallets-and-luggages"]
+          }
+        },
+        "type": "page"
+      },
+      "_custom_json": {}
+    },
+    "l3": null
+  },
+  "tryouts": [],
+  "promo_meta": {},
+  "rating": null,
+  "rating_count": null,
+  "image_nature": "standard",
+  "tags": [],
+  "teaser_tag": "",
+  "no_of_boxes": 1,
+  "custom_order": {
+    "is_custom_order": false,
+    "manufacturing_time_unit": "days",
+    "manufacturing_time": 0
+  },
+  "_custom_json": {
+    "_app": {}
+  },
+  "_custom_meta": [],
+  "is_dependent": false,
+  "moq": {
+    "increment_unit": 1,
+    "minimum": 1
+  },
+  "seo": {
+    "title": "What a Click Bestie",
+    "description": ""
+  },
+  "net_quantity": {},
+  "item_type": "standard",
+  "product_online_date": "2023-11-04T21:42:29.788000",
+  "highlights": [],
+  "description": "This Bag exude effortless elegance, adding a touch of sophistication to your party look.",
+  "short_description": "",
+  "country_of_origin": "India",
+  "similars": []
+}

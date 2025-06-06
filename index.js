@@ -200,7 +200,7 @@ export const getProductWithTitleDescription = async (req, res) => {
 
       const result = {
         generatedTitle,
-        generatedDescription,
+        generatedDescription: generatedDescription,
         pricing,
         bannerAdImage: bannerAdImage || finalImageUrl,
       };
@@ -214,7 +214,10 @@ export const getProductWithTitleDescription = async (req, res) => {
         generatedTitle:
           product.name || product.title || "Error generating title",
         generatedDescription:
-          product.description || "Error generating description",
+          // add link to buy this product "https://fyndify.com/product/" + product._id,
+          product.description +
+            "\n\nBuy this product here: https://fyndify.com/product/" +
+            product._id || "Error generating description",
         pricing: product.pricing || {},
         bannerAdImage: product.media?.[0]?.url || "",
         error: productError.message,
@@ -241,7 +244,19 @@ const connect = async () => {
   }
 };
 
+function deleteAllProducts() {
+  Product.deleteMany({})
+    .then(() => {
+      console.log("All products deleted successfully");
+    })
+    .catch((err) => {
+      console.error("Error deleting products:", err);
+    });
+}
+
 app.listen(PORT, () => {
   connect();
+  // Uncomment the line below to delete all products on server start
+  //deleteAllProducts();
   console.log(`Server is running on port ${PORT}`);
 });

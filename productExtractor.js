@@ -218,7 +218,7 @@ Please provide:
    - Use cases or occasions
    - Material/quality highlights
    - Why customers should buy this product
-   - EXAMPLE: "This stylish cotton t-shirt is perfect for casual outings and everyday wear. Made from high-quality cotton, it offers comfort and breathability. Available in multiple sizes, this t-shirt is a must-have for your wardrobe. avail it now at an unbeatable price of ₹${pricing.price} (Effective: ₹${pricing.effectivePrice}). Don't miss out on this limited-time offer!"
+   - EXAMPLE: "This stylish cotton t-shirt is perfect for casual outings and everyday wear. Made from high-quality cotton, it offers comfort and breathability. Available in multiple sizes, this t-shirt is a must-have for your wardrobe. avail it now at an unbeatable price of ₹${pricing.price} (Effective: ₹${pricing.effectivePrice}). Don't miss out on this limited-time offer! Buy now [Link to product "\n\nBuy this product here: https://fyndify.com/product/"]"
 
 Format your response as JSON:
 {
@@ -307,7 +307,7 @@ give the response in JSON format only, without any additional text or markdown f
       const enhancedData = JSON.parse(aiResponse);
       return {
         enhancedTitle: enhancedData.enhancedTitle || title,
-        enhancedDescription: enhancedData.enhancedDescription || description,
+        enhancedDescription: enhancedData.enhancedDescription  || description,
         seoKeywords: enhancedData.seoKeywords || [],
       };
     } catch (parseError) {
